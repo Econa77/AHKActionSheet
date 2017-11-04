@@ -67,6 +67,8 @@ static const CGFloat kCancelButtonShadowHeightRatio = 0.333f;
     [appearance setBlurSaturationDeltaFactor:1.8f];
     [appearance setButtonHeight:60.0f];
     [appearance setCancelButtonHeight:44.0f];
+    [appearance setBottomLayoutMargin:0];
+    [appearance setTopLayoutMargin:0];
     [appearance setAutomaticallyTintButtonImages:@YES];
     [appearance setSelectedBackgroundColor:[UIColor colorWithWhite:0.1f alpha:0.2f]];
     [appearance setCancelButtonTextAttributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:17.0f],
@@ -288,7 +290,7 @@ static const CGFloat kCancelButtonShadowHeightRatio = 0.333f;
 
     void(^delayedAnimations)(void) = ^(void) {
         self.cancelButton.frame = CGRectMake(0,
-                                             CGRectGetMaxY(self.bounds) - self.cancelButtonHeight,
+                                             CGRectGetMaxY(self.bounds) - self.cancelButtonHeight - self.bottomLayoutMargin,
                                              CGRectGetWidth(self.bounds),
                                              self.cancelButtonHeight);
             
@@ -307,7 +309,7 @@ static const CGFloat kCancelButtonShadowHeightRatio = 0.333f;
             // leave an empty space on the top to make the control look similar to UIActionSheet
             topInset = (CGFloat)round(CGRectGetHeight(self.tableView.frame) * kTopSpaceMarginFraction);
         }
-        self.tableView.contentInset = UIEdgeInsetsMake(topInset, 0, 0, 0);
+        self.tableView.contentInset = UIEdgeInsetsMake(topInset + self.topLayoutMargin, 0, 0, 0);
 
         self.tableView.bounces = [self.cancelOnPanGestureEnabled boolValue] || !buttonsFitInWithoutScrolling;
     };
@@ -436,7 +438,7 @@ static const CGFloat kCancelButtonShadowHeightRatio = 0.333f;
     [cancelButton setAttributedTitle:attrTitle forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     cancelButton.frame = CGRectMake(0,
-                                    CGRectGetMaxY(self.bounds) - self.cancelButtonHeight,
+                                    CGRectGetMaxY(self.bounds) - self.cancelButtonHeight - self.bottomLayoutMargin,
                                     CGRectGetWidth(self.bounds),
                                     self.cancelButtonHeight);
     // move the button below the screen (ready to be animated -show)
@@ -467,7 +469,7 @@ static const CGFloat kCancelButtonShadowHeightRatio = 0.333f;
     CGRect frame = CGRectMake(0,
                               statusBarHeight,
                               CGRectGetWidth(self.bounds),
-                              CGRectGetHeight(self.bounds) - statusBarHeight - self.cancelButtonHeight);
+                              CGRectGetHeight(self.bounds) - statusBarHeight - self.cancelButtonHeight - self.bottomLayoutMargin);
 
     UITableView *tableView = [[UITableView alloc] initWithFrame:frame];
     tableView.backgroundColor = [UIColor clearColor];
